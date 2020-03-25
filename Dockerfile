@@ -7,6 +7,10 @@ RUN mkdir -p /var/repos/ \
  && apt-get install -y \
     git \
     python-pip \
+    python-virtualenv \
+ && cd /var/repos \
+ && virtualenv env \
+ && . env/bin/activate \
  && git clone \
     --single-branch \
     --branch stable/$RELEASE \
@@ -24,3 +28,5 @@ RUN mkdir -p /var/repos/ \
  && pip install /var/repos/python-neutronclient \
  && echo "neutron $(neutron --version 2>&1 | grep -v depr)" >> /VERSIONS \
  && cat /VERSIONS
+
+CMD . /var/repos/env/bin/activate && openstack
