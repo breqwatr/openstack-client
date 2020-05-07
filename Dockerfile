@@ -29,4 +29,6 @@ RUN mkdir -p /var/repos/ \
  && echo "neutron $(neutron --version 2>&1 | grep -v depr)" >> /VERSIONS \
  && cat /VERSIONS
 
+COPY image-files/ /
+
 CMD . /var/repos/env/bin/activate && openstack
