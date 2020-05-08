@@ -2,6 +2,8 @@ FROM ubuntu:bionic
 
 ARG RELEASE
 
+COPY image-files/ /
+
 RUN mkdir -p /var/repos/ \
  && apt-get update \
  && apt-get install -y \
@@ -9,7 +11,7 @@ RUN mkdir -p /var/repos/ \
     python-pip \
     python-virtualenv \
  && cd /var/repos \
- && virtualenv env \
+ && virtualenv --python=python3 env \
  && . env/bin/activate \
  && git clone \
     --single-branch \
@@ -18,17 +20,15 @@ RUN mkdir -p /var/repos/ \
     /var/repos/python-openstackclient \
  && pip install /var/repos/python-openstackclient \
  && openstack --version 2>> /VERSIONS \
- && echo "nova $(nova --version 2>&1)" >> /VERSIONS \
- && echo "cinder $(cinder --version 2>&1)" >> /VERSIONS \
- && git clone \
+ &&  git clone \
     --single-branch \
     --branch stable/$RELEASE \
     https://github.com/openstack/python-neutronclient.git \
     /var/repos/python-neutronclient \
  && pip install /var/repos/python-neutronclient \
+ && echo "nova $(nova --version 2>&1)" >> /VERSIONS \
+ && echo "cinder $(cinder --version 2>&1)" >> /VERSIONS \
  && echo "neutron $(neutron --version 2>&1 | grep -v depr)" >> /VERSIONS \
  && cat /VERSIONS
-
-COPY image-files/ /
 
 CMD . /var/repos/env/bin/activate && openstack
