@@ -66,7 +66,7 @@ fi
 user_id=$(openstack user show $SA_USER -c id -f value)
 admin_role_id=$(openstack role show admin -c id -f value)
 if [[ ! $(openstack role assignment  list | grep $admin_role_id | grep $user_id) ]]; then
-  echo "assinging admin roles to #SA_USER"
+  echo "assinging admin roles to $SA_USER"
   openstack role add --project admin --user $SA_USER admin
   openstack role add --project $SA_PROJECT --user $SA_USER _member_
   openstack role add --domain default --user $SA_USER admin
