@@ -26,6 +26,7 @@ RUN mkdir -p /var/repos/ \
     https://github.com/openstack/python-neutronclient.git \
     /var/repos/python-neutronclient \
  && pip install /var/repos/python-neutronclient \
+ && pip install gnocchiclient==7.0.6 \
  && echo "nova $(nova --version 2>&1)" >> /VERSIONS \
  && echo "cinder $(cinder --version 2>&1)" >> /VERSIONS \
  && echo "neutron $(neutron --version 2>&1 | grep -v depr)" >> /VERSIONS \
